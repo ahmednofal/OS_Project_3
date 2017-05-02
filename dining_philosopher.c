@@ -10,33 +10,33 @@
 
 #define NUM_THREADS 5
 
-#define trylock_on_2(philosopher_number)\
-        (pthread_mutex_trylock(&mutex[philosopher_number]) != 0) && (pthread_mutex_trylock(&mutex[philosopher_number+1]) != 0)
+#define trylock_on_2(philo_num)\
+        (pthread_mutex_trylock(&mutex[philo_num]) != 0) && (pthread_mutex_trylock(&mutex[philo_num+1]) != 0)
 
-#define check_if_mutexes_locked(philosopher_number)\
-        (mutex[philosopher_number].__data.__lock > 0) && (mutex[philosopher_number+1%NUM_THREADS].__data.__lock > 0)
+#define check_if_mutexes_locked(philo_num)\
+        (mutex[philo_num].__data.__lock > 0) && (mutex[philo_num+1%NUM_THREADS].__data.__lock > 0)
 
-#define cond_wait_on_2(philosopher_number)\
-        do{pthread_cond_wait(&cond_var[philosopher_number], &mutex[philosopher_number]);\
-        pthread_cond_wait(&cond_var[philosopher_number+1%NUM_THREADS], &mutex[philosopher_number+1%NUM_THREADS]);\
+#define cond_wait_on_2(philo_num)\
+        do{pthread_cond_wait(&cond_var[philo_num], &mutex[philo_num]);\
+        pthread_cond_wait(&cond_var[philo_num+1%NUM_THREADS], &mutex[philo_num+1%NUM_THREADS]);\
             }while(0)
 
-#define mutex_lock_2(philosopher_number)\
+#define mutex_lock_2(philo_num)\
         do{\
-        pthread_mutex_lock(&mutex[philosopher_number]);\
-        pthread_mutex_lock(&mutex[philosopher_number+1%NUM_THREADS]);\
+        pthread_mutex_lock(&mutex[philo_num]);\
+        pthread_mutex_lock(&mutex[philo_num+1%NUM_THREADS]);\
             }while(0)
 
-#define mutex_unlock_2(philosopher_number)\
+#define mutex_unlock_2(philo_num)\
         do{\
-        pthread_mutex_unlock(&mutex[philosopher_number]);\
-        pthread_mutex_unlock(&mutex[philosopher_number+1%NUM_THREADS]);\
+        pthread_mutex_unlock(&mutex[philo_num]);\
+        pthread_mutex_unlock(&mutex[philo_num+1%NUM_THREADS]);\
             }while(0)
 
-#define cond_signal_2(philosopher_number)\
+#define cond_signal_2(philo_num)\
         do{\
-        pthread_cond_signal(&cond_var[philosopher_number]);\
-        pthread_cond_signal(&cond_var[philosopher_number+1%NUM_THREADS]);\
+        pthread_cond_signal(&cond_var[philo_num]);\
+        pthread_cond_signal(&cond_var[philo_num+1%NUM_THREADS]);\
             }while(0)
 
 // Shared Resources
@@ -48,8 +48,8 @@ pthread_cond_t cond_var[NUM_THREADS];
 // Function Prototypes
 
 void* runner(void *param); /* threads call this function*/
-void pickup_forks(int philosopher_number);
-void return_forks(int philosopher_number);
+void pickup_forks(int philo_num);
+void return_forks(int philo_num);
 struct arguments{
 	pthread_mutex_t mutex;
 	pthread_cond_t cond_var;
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 	/* get the default attributes */
 	/* Just a brain storm*/
 	/* what I need to do
-		I need to initialize 5 threads one for each philosopher_number
+		I need to initialize 5 threads one for each philo_num
 	what I do not know how are threads simulating this behavior 
 	of philosophers when they do not know the resources
 	allocated for each other thread*/
@@ -85,39 +85,39 @@ int main(int argc, char *argv[])
 /* The thread will begin control in this function */
 void* runner(void *param)
 {
-    //int philosopher_number = *((int*) param);
+    int secs_to_slp = rand()+1%3;
+    //int philo_num = *((int*) param);
     // The philosopher will start by trying to eat, all of them will
     // which means it will try to lock the corresponding mutex and the mutex of the next philosopher
     // if any of them fails it will wait on that mutex
     // Waiting should be executed using the cond_var
     // it will wait on both mutexes if both are not available
     //printf("inside runner with philosopher :%d \n", *((int*) param));
-    //sprintf("mutex[philosopher_number].__data.__lock %d", mutex[*((int*) param)].__data.__lock );
+    //sprintf("mutex[philo_num].__data.__lock %d", mutex[*((int*) param)].__data.__lock );
     pickup_forks(*((int*) param));
-    int seconds_to_sleep = rand();
-    sleep(seconds_to_sleep);
+    sleep(secs_to_slp);
     return_forks(*((int*) param));
     pthread_exit(0);
 
 }
 // Requesting resources
-void pickup_forks(int philosopher_number)
+void pickup_forks(int philo_num)
 {
-    printf("mutex[philosopher_number].__data.__lock %d\t\n", mutex[philosopher_number].__data.__lock );
-    while(check_if_mutexes_locked(philosopher_number))
+    printf("mutex[philo_num].__data.__lock %d\t\n", mutex[philo_num].__data.__lock );
+    while(check_if_mutexes_locked(philo_num))
     {
         printf("Checking the mutexes\n");
-        cond_wait_on_2(philosopher_number);
-        printf("After the conditional waiting mutex[philosopher_number].__data.__lock %d\t\n", mutex[philosopher_number].__data.__lock );
+        cond_wait_on_2(philo_num);
+        printf("After the conditional waiting mutex[philo_num].__data.__lock %d\t\n", mutex[philo_num].__data.__lock );
     }
-    mutex_lock_2(philosopher_number);
-    //printf("inside pickup forks with philosopher :%d \n", philosopher_number);
+    mutex_lock_2(philo_num);
+    //printf("inside pickup forks with philosopher :%d \n", philo_num);
 
 }
 // Returning resources
-void return_forks(int philosopher_number)
+void return_forks(int philo_num)
 {
-    //printf("inside return forks with philosopher :%d \n", philosopher_number);
-    cond_signal_2(philosopher_number);
-    mutex_unlock_2(philosopher_number);
+    //printf("inside return forks with philosopher :%d \n", philo_num);
+    cond_signal_2(philo_num);
+    mutex_unlock_2(philo_num);
 }
