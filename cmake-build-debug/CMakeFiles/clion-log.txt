@@ -1,0 +1,4 @@
+/home/naufal/Downloads/clion-172.1572.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/naufal/Documents/Spring17/OS/OS_Project_3-master
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/naufal/Documents/Spring17/OS/OS_Project_3-master

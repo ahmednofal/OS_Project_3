@@ -1,0 +1,1 @@
+/usr/bin/cc  -g   CMakeFiles/OS_Project_3_master.dir/dining_philosopher.c.o  -o OS_Project_3_master 

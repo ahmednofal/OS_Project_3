@@ -1,0 +1,2 @@
+Options: 
+CMake: 3.7.2@/home/naufal/Downloads/clion-172.1572.3/bin/cmake/bin/cmake

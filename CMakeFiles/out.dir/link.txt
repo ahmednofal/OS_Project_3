@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/out.dir/dining_philosopher.c.o  -o out  -L/usr/include -Wl,-rpath,/usr/include -lpthread 

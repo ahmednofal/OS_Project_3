@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/naufal/Documents/Spring17/OS/OS_Project_3-master/dining_philosopher.c
+pthread.h
+-
+stdio.h
+-
+stdlib.h
+-
+unistd.h
+-
+time.h
+-
+sys/types.h
+-
+

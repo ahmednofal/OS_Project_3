@@ -1,0 +1,3 @@
+/home/naufal/Documents/Spring17/OS/OS_Project_3-master/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/naufal/Documents/Spring17/OS/OS_Project_3-master/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/naufal/Documents/Spring17/OS/OS_Project_3-master/cmake-build-debug/CMakeFiles/output.dir
