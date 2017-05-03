@@ -7,13 +7,13 @@
 #IncludeRegexTransform: 
 
 /home/naufal/Documents/Spring17/OS/OS_Project_3-master/dining_philosopher.c
-pthread.h
--
-stdio.h
--
 stdlib.h
 -
 unistd.h
+-
+pthread.h
+-
+stdio.h
 -
 time.h
 -
