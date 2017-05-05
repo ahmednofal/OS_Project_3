@@ -57,9 +57,9 @@ pthread_t philosophers[NUM_THREADS]; /* the thread identifier */
 pthread_attr_t philosophers_attr[NUM_THREADS]; /* set of thread attributes */
 pthread_mutex_t mutex[NUM_THREADS];
 pthread_cond_t cond_var[NUM_THREADS];
-static pthread_mutex_t printing_mutex;
+pthread_mutex_t printing_mutex;
 // forks to be taken and released
-static int forks[NUM_THREADS];
+int forks[NUM_THREADS];
 /*random commenting trying to understand the problem
  * Now we have the */
 
