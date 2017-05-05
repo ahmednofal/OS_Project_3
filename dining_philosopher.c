@@ -129,7 +129,7 @@ void* runner(void *param)
         pthread_mutex_lock(&printing_mutex);
         printf("philo_num %d left forks and thinking .....    \n", philo_num);
         pthread_mutex_unlock(&printing_mutex);
-        pthread_exit(0);
+        //pthread_exit(0);
     }
 
 }
