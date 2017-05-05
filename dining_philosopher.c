@@ -31,23 +31,25 @@
 
 //pthread_cond_wait(&cond_var[philo_num+1%NUM_THREADS], &mutex[philo_num+1%NUM_THREADS]);\
 
+#define forks_init(forks)\
+        do{for (int i =0; i < NUM_THREADS; i++)\
+            forks[i] = 0;}while(0)
+
 #define mutex_lock(philo_num)\
         do{\
-        pthread_mutex_lock(&mutex[philo_num%NUM_THREADS]);\
+        pthread_mutex_lock(&mutex[philo_num]);\
             }while(0)
 
 //pthread_mutex_lock(&mutex[philo_num+1%NUM_THREADS]);\
 
-#define mutex_unlock_2(philo_num)\
+#define mutex_unlock(philo_num)\
         do{\
-        pthread_mutex_unlock(&mutex[(philo_num-1)%NUM_THREADS]);\
-        pthread_mutex_unlock(&mutex[(philo_num+1)%NUM_THREADS]);\
+        pthread_mutex_unlock(&mutex[philo_num]);\
             }while(0)
 
-#define cond_signal_2(philo_num)\
+#define cond_signal(philo_num)\
         do{\
-        pthread_cond_signal(&cond_var[(philo_num-1)%NUM_THREADS]);\
-        pthread_cond_signal(&cond_var[(philo_num+1)%NUM_THREADS]);\
+        pthread_cond_signal(&cond_var[philo_num]);\
             }while(0)
 
 // Shared Resources
@@ -56,6 +58,11 @@ pthread_attr_t philosophers_attr[NUM_THREADS]; /* set of thread attributes */
 pthread_mutex_t mutex[NUM_THREADS];
 pthread_cond_t cond_var[NUM_THREADS];
 static pthread_mutex_t printing_mutex;
+// forks to be taken and released
+static int forks[NUM_THREADS];
+/*random commenting trying to understand the problem
+ * Now we have the */
+
 // Function Prototypes
 
 void* runner(void *param); /* threads call this function*/
@@ -78,6 +85,7 @@ int main(int argc, char *argv[])
 	what I do not know how are threads simulating this behavior 
 	of philosophers when they do not know the resources
 	allocated for each other thread*/
+    forks_init(forks);
     pthread_mutex_init(&printing_mutex,NULL);
 	for (int i =0; i < NUM_THREADS; i++)
 		pthread_attr_init(&philosophers_attr[i]);
@@ -87,15 +95,14 @@ int main(int argc, char *argv[])
     for (int i =0; i < NUM_THREADS; i++)
         pthread_cond_init(&cond_var[i], NULL);
     //for (int i =0; i <NUM_THREADS; i++)
-    while(1)
+
+    for (int i = 0; i < NUM_THREADS; i++)
     {
-        int i = rand()%NUM_THREADS;
         printf("creating thread for phil_num %d \n\n", i);
-        //printf("inside pthread_create loop with i:%d \n", i);
-        sleep(1);
         pthread_create(&philosophers[i],&philosophers_attr[i], &runner, &i);
     }
-	/* wait for the thread to exit */
+
+    /* wait for the thread to exit */
 	for (int i =0; i < NUM_THREADS; i++)
 		pthread_join(philosophers[i],NULL);	
 }
@@ -127,77 +134,52 @@ void* runner(void *param)
 // Requesting resources
 void pickup_forks(int philo_num)
 {
-//    printf("philo_num %d\n",philo_num);
-//    printf("mutex %d   state is :    %d\t\n", right,mutex[philo_num].__data.__lock );
-//    printf("mutex %d   state is :    %d\t\n", left,mutex[philo_num].__data.__lock );
-//    if (!mutex_locked(right(philo_num)) && !mutex_locked(left(philo_num)))
-//    {
-//        mutex_lock(right(philo_num));
-//        mutex_lock(left(philo_num));
-////        printf("inside 1");
-////        printf("mutex %d   state is :    %d\t\n", right,mutex[philo_num].__data.__lock );
-////        printf("mutex %d   state is :    %d\t\n", left,mutex[philo_num].__data.__lock );
-//    }
-//    else
-//        if (!mutex_locked(right(philo_num)) && mutex_locked(left(philo_num)))
-//        {
-//            printf("inside 2");
-//            mutex_lock(right(philo_num));
-//            while(mutex_locked(left(philo_num)))
-//            cond_wait_on(right(philo_num));
-////            printf("mutex %d   state is :    %d\t\n", right,mutex[philo_num].__data.__lock );
-////            printf("mutex %d   state is :    %d\t\n", left,mutex[philo_num].__data.__lock );
-//        }
-//
-//        else
-//            if (!mutex_locked(left(philo_num)) && mutex_locked(right(philo_num)))
-//            {
-//                printf("inside 3");
-//                mutex_lock(left(philo_num));
-//                while(mutex_locked(right(philo_num)))
-//                {
-//                    cond_wait_on(left(philo_num));
-//                }
-////                printf("mutex %d   state is :    %d\t\n", right,mutex[philo_num].__data.__lock );
-////                printf("mutex %d   state is :    %d\t\n", left,mutex[philo_num].__data.__lock );
-//            }
+    if (philo_num != 0)
+    {
+        mutex_lock(right(philo_num));
+        forks[right(philo_num)] = 1;
+        while(forks[left(philo_num)] != 0)
+        {
+            cond_wait_on(right(philo_num));
+        }
+        mutex_lock(left(philo_num));
+        forks[left(philo_num)] = 1;
+        mutex_lock(right(philo_num));
 
+    }
+    else
+    {
+        mutex_lock(left(philo_num));
+        forks[left(philo_num)] = 1;
+        while(forks[right(philo_num)] != 0)
+        {
+            cond_wait_on(left(philo_num));
+        }
+        mutex_lock(right(philo_num));
+        forks[right(philo_num)] = 1;
+        mutex_lock(left(philo_num));
 
+    }
 
-
-//    //printf("inside pickup forks with philosopher :%d \n", philo_num);
-//    if (succ_trylock_on(right(philo_num)) && succ_trylock_on(left(philo_num)))
-//    {
-//        mutex_lock(right(philo_num));
-//        mutex_lock(left(philo_num));
-//    }
-//    else
-//        if(!succ_trylock_on(right(philo_num)) && !succ_trylock_on(left(philo_num)))
-//        {
-//            cond_wait_on(left(philo_num));
-//            cond_wait_on(right(philo_num));
-//        }
-//        else
-//            if (!succ_trylock_on(right(philo_num)) && succ_trylock_on(left(philo_num)))
-//            {
-//                mutex_lock(left(philo_num));
-//                cond_wait_on(left(philo_num));
-//            }
-//            else
-//            {
-//                mutex_lock(right(philo_num));
-//                cond_wait_on(right(philo_num));
-//            }
-//
-
-    mutex_lock(right(philo_num));
-    mutex_lock(left(philo_num));
 }
 // Returning resources
 void return_forks(int philo_num)
 {
     //printf("inside return forks with philosopher :%d \n", philo_num);
     //cond_signal_2(philo_num);
-    mutex_unlock_2(philo_num);
+    if(philo_num!=0)
+    {
+        forks[right(philo_num)] = 0;
+        mutex_unlock(left(philo_num));
+        mutex_unlock(right(philo_num));
+        cond_signal(right(philo_num));
+    }
+    else
+    {
+        forks[left(philo_num)] = 0;
+        mutex_unlock(right(philo_num));
+        mutex_unlock(left(philo_num));
+        cond_signal(left(philo_num));
+    }
 
 }
