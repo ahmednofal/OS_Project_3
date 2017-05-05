@@ -95,42 +95,42 @@ int main(int argc, char *argv[])
     for (int i =0; i < NUM_THREADS; i++)
         pthread_cond_init(&cond_var[i], NULL);
     //for (int i =0; i <NUM_THREADS; i++)
-    while(1)
-    {
         for (int i = 0; i < NUM_THREADS; i++)
     {
         printf("creating thread for phil_num %d \n\n", i);
         pthread_create(&philosophers[i],&philosophers_attr[i], &runner, &i);
     }
 
-    /* wait for the thread to exit */
-	for (int i =0; i < NUM_THREADS; i++)
-		pthread_join(philosophers[i],NULL);
-    }
+//    /* wait for the thread to exit */
+//	for (int i =0; i < NUM_THREADS; i++)
+//		pthread_join(philosophers[i],NULL);
+
 }
 /* The thread will begin control in this function */
 void* runner(void *param)
 {
-    int secs_to_slp = (rand()+1)%2;
-
-    int philo_num = *((int*) param);
-    // The philosopher will start by trying to eat, all of them will
-    // which means it will try to lock the corresponding mutex and the mutex of the next philosopher
-    // if any of them fails it will wait on that mutex
-    // Waiting should be executed using the cond_var
-    // it will wait on both mutexes if both are not available
-    //printf("inside runner with philosopher :%d \n", *((int*) param));
-    //sprintf("mutex[philo_num].__data.__lock %d", mutex[*((int*) param)].__data.__lock );
-    pickup_forks(philo_num);
-    pthread_mutex_lock(&printing_mutex);
-    printf("philo_num %d took forks and eating.....    \n", philo_num);
-    pthread_mutex_unlock(&printing_mutex);
-    sleep(secs_to_slp);
-    return_forks(philo_num);
-    pthread_mutex_lock(&printing_mutex);
-    printf("philo_num %d left forks and thinking .....    \n", philo_num);
-    pthread_mutex_unlock(&printing_mutex);
-    pthread_exit(0);
+    while(1)
+    {
+        int secs_to_slp = (rand()+1)%2;
+        int philo_num = *((int*) param);
+        // The philosopher will start by trying to eat, all of them will
+        // which means it will try to lock the corresponding mutex and the mutex of the next philosopher
+        // if any of them fails it will wait on that mutex
+        // Waiting should be executed using the cond_var
+        // it will wait on both mutexes if both are not available
+        //printf("inside runner with philosopher :%d \n", *((int*) param));
+        //sprintf("mutex[philo_num].__data.__lock %d", mutex[*((int*) param)].__data.__lock );
+        pickup_forks(philo_num);
+        pthread_mutex_lock(&printing_mutex);
+        printf("philo_num %d took forks and eating.....    \n", philo_num);
+        pthread_mutex_unlock(&printing_mutex);
+        sleep(secs_to_slp);
+        return_forks(philo_num);
+        pthread_mutex_lock(&printing_mutex);
+        printf("philo_num %d left forks and thinking .....    \n", philo_num);
+        pthread_mutex_unlock(&printing_mutex);
+        pthread_exit(0);
+    }
 
 }
 // Requesting resources
