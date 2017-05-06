@@ -151,11 +151,12 @@ void pickup_forks(int philo_num)
 {
     mutex_lock(right(philo_num));
     forks[right(philo_num)] = 1;
-    while(forks[left(philo_num)] != 0)
+    //forks[left(philo_num)] != 0
+    while(pthread_mutex_trylock(&mutex[left(philo_num)]) !=0)
     {
         cond_wait_on(right(philo_num));
     }
-    mutex_lock(left(philo_num));
+    //mutex_lock(left(philo_num));
     forks[left(philo_num)] = 1;
 }
 // Returning resources
