@@ -169,10 +169,10 @@ void pickup_forks(int philo_num)
 // Returning resources
 void return_forks(int philo_num)
 {
+    forks[left(philo_num)] = 0;
     cond_signal(left(philo_num));
     mutex_unlock(left(philo_num));
-    forks[left(philo_num)] = 0;
+    forks[right(philo_num)] = 0;
     cond_signal(right(philo_num));
     mutex_unlock(right(philo_num));
-    forks[right(philo_num)] = 0;
 }
