@@ -106,10 +106,14 @@ int main(int argc, char *argv[])
     for (int i =0; i < NUM_THREADS; i++)
         pthread_cond_init(&cond_var[i], NULL);
     //for (int i =0; i <NUM_THREADS; i++)
-        for (int i = 0; i < NUM_THREADS; i++)
+    int i = 0;
+
+    while( i < NUM_THREADS)
     {
         printf("creating thread for phil_num %d \n\n", i);
         pthread_create(&philosophers[i],&philosophers_attr[i], &runner, &i);
+        if (i < NUM_THREADS-1)
+            i++;
     }
 
 //    /* wait for the thread to exit */
