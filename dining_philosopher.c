@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     //for (int i =0; i <NUM_THREADS; i++)
     int i = 0;
 
-    while( i < NUM_THREADS)
+    while( i < NUM_THREADS-1)
     {
         printf("creating thread for phil_num %d \n\n", i);
         pthread_create(&philosophers[i],&philosophers_attr[i], &runner, &i);
