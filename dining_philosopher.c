@@ -14,6 +14,13 @@
 
 #define left(philo_num) ((philo_num+1)%NUM_THREADS)
 
+#define EATING 1
+
+#define THINKING 0
+
+int phil_state[NUM_THREADS];
+
+
 #define succ_trylock_on(philo_num)\
         (pthread_mutex_trylock(&mutex[philo_num]) == 0)
 
@@ -34,6 +41,10 @@
 #define forks_init(forks)\
         do{for (int i =0; i < NUM_THREADS; i++)\
             forks[i] = 0;}while(0)
+
+#define phil_state_init(phil_state)\
+        do{for (int i =0; i < NUM_THREADS; i++)\
+            phil_state[i] = THINKING;}while(0)
 
 #define mutex_lock(philo_num)\
         do{\
@@ -102,17 +113,21 @@ int main(int argc, char *argv[])
     }
 
 //    /* wait for the thread to exit */
-//	for (int i =0; i < NUM_THREADS; i++)
-//		pthread_join(philosophers[i],NULL);
+	for (int i =0; i < NUM_THREADS; i++)
+		pthread_join(philosophers[i],NULL);
+
+    return 0;
 
 }
 /* The thread will begin control in this function */
 void* runner(void *param)
 {
+    int philo_num = *((int*) param);
+    fprintf("%d\n",philo_num);
     while(1)
     {
         int secs_to_slp = (rand()+1)%2;
-        int philo_num = *((int*) param);
+
         // The philosopher will start by trying to eat, all of them will
         // which means it will try to lock the corresponding mutex and the mutex of the next philosopher
         // if any of them fails it will wait on that mutex
@@ -127,79 +142,40 @@ void* runner(void *param)
         sleep(secs_to_slp);
         return_forks(philo_num);
         pthread_mutex_lock(&printing_mutex);
-        printf("philo_num %d left forks and thinking .....    \n", philo_num);
+        printf("philo_num %d returned forks and thinking.....    \n", philo_num);
         pthread_mutex_unlock(&printing_mutex);
-        //pthread_exit(0);
     }
 
 }
 // Requesting resources
 void pickup_forks(int philo_num)
 {
-//    if (philo_num != 0)
-//    {
-//        mutex_lock(right(philo_num));
-//        forks[right(philo_num)] = 1;
-//        while(forks[left(philo_num)] != 0)
-//        {
-//            cond_wait_on(right(philo_num));
-//        }
-//        mutex_lock(left(philo_num));
-//        forks[left(philo_num)] = 1;
-//        mutex_lock(right(philo_num));
 //
-//    }
-//    else
-//    {
-//        mutex_lock(left(philo_num));
-//        forks[left(philo_num)] = 1;
 //        while(forks[right(philo_num)] != 0)
 //        {
 //            cond_wait_on(left(philo_num));
 //        }
-//        mutex_lock(right(philo_num));
-//        forks[right(philo_num)] = 1;
-//        mutex_lock(left(philo_num));
-//
-//    }
-    if (philo_num != 0)
-    {
+
         mutex_lock(right(philo_num));
         forks[right(philo_num)] = 1;
+        while(forks[left(philo_num)] != 0)
+        {
+            cond_wait_on(right(philo_num));
+        }
         mutex_lock(left(philo_num));
         forks[left(philo_num)] = 1;
-
-    }
-    else
-    {
-        mutex_lock(left(philo_num));
-        forks[left(philo_num)] = 1;
-        mutex_lock(right(philo_num));
-        forks[right(philo_num)] = 1;
-
-    }
 }
 // Returning resources
 void return_forks(int philo_num)
 {
     //printf("inside return forks with philosopher :%d \n", philo_num);
     //cond_signal_2(philo_num);
-    if(philo_num!=0)
-    {
         forks[right(philo_num)] = 0;
         forks[left(philo_num)] = 0;
 
         mutex_unlock(left(philo_num));
+        cond_signal(left(philo_num));
         mutex_unlock(right(philo_num));
-//        cond_signal(right(philo_num));
-    }
-    else
-    {
-        forks[left(philo_num)] = 0;
-        forks[right(philo_num)] = 0;
-        mutex_unlock(right(philo_num));
-        mutex_unlock(left(philo_num));
-//        cond_signal(left(philo_num));
-    }
+        cond_signal(right(philo_num));
 
 }
