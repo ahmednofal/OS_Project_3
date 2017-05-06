@@ -123,7 +123,6 @@ int main(int argc, char *argv[])
 void* runner(void *param)
 {
     int philo_num = *((int*) param);
-    fprintf("%d\n",philo_num);
     while(1)
     {
         int secs_to_slp = (rand()+1)%2;
@@ -137,12 +136,12 @@ void* runner(void *param)
         //sprintf("mutex[philo_num].__data.__lock %d", mutex[*((int*) param)].__data.__lock );
         pickup_forks(philo_num);
         pthread_mutex_lock(&printing_mutex);
-        printf("philo_num %d took forks and eating.....    \n", philo_num);
+        printf("philo_num %d eating.....    \n", philo_num);
         pthread_mutex_unlock(&printing_mutex);
         sleep(secs_to_slp);
         return_forks(philo_num);
         pthread_mutex_lock(&printing_mutex);
-        printf("philo_num %d returned forks and thinking.....    \n", philo_num);
+        printf("philo_num %d thinking.....    \n", philo_num);
         pthread_mutex_unlock(&printing_mutex);
     }
 
@@ -150,32 +149,22 @@ void* runner(void *param)
 // Requesting resources
 void pickup_forks(int philo_num)
 {
-//
-//        while(forks[right(philo_num)] != 0)
-//        {
-//            cond_wait_on(left(philo_num));
-//        }
-
-        mutex_lock(right(philo_num));
-        forks[right(philo_num)] = 1;
-        while(forks[left(philo_num)] != 0)
-        {
-            cond_wait_on(right(philo_num));
-        }
-        mutex_lock(left(philo_num));
-        forks[left(philo_num)] = 1;
+    mutex_lock(right(philo_num));
+    forks[right(philo_num)] = 1;
+    while(forks[left(philo_num)] != 0)
+    {
+        cond_wait_on(right(philo_num));
+    }
+    mutex_lock(left(philo_num));
+    forks[left(philo_num)] = 1;
 }
 // Returning resources
 void return_forks(int philo_num)
 {
-    //printf("inside return forks with philosopher :%d \n", philo_num);
-    //cond_signal_2(philo_num);
-        forks[right(philo_num)] = 0;
-        forks[left(philo_num)] = 0;
-
-        mutex_unlock(left(philo_num));
-        cond_signal(left(philo_num));
-        mutex_unlock(right(philo_num));
-        cond_signal(right(philo_num));
-
+    cond_signal(left(philo_num));
+    mutex_unlock(left(philo_num));
+    forks[left(philo_num)] = 0;
+    cond_signal(right(philo_num));
+    mutex_unlock(right(philo_num));
+    forks[right(philo_num)] = 0;
 }
