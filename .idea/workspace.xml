@@ -12,7 +12,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ecf7a077-77c3-4059-b33a-658f50de0173" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/CMakeFiles/out.dir/dining_philosopher.c.o" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out" afterPath="$PROJECT_DIR$/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dining_philosopher.c" afterPath="$PROJECT_DIR$/dining_philosopher.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -40,8 +42,8 @@
       <file leaf-file-name="dining_philosopher.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dining_philosopher.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="593">
-              <caret line="153" column="33" lean-forward="true" selection-start-line="153" selection-start-column="33" selection-end-line="153" selection-end-column="33" />
+            <state relative-caret-position="333">
+              <caret line="161" column="31" lean-forward="false" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -242,12 +244,13 @@
       <workItem from="1493902395122" duration="2437000" />
       <workItem from="1493984216360" duration="6553000" />
       <workItem from="1494018973702" duration="5336000" />
-      <workItem from="1494070019296" duration="7076000" />
+      <workItem from="1494070019296" duration="8159000" />
+      <workItem from="1494104488148" duration="227000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56702000" />
+    <option name="totallyTimeSpent" value="58012000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="25" width="1368" height="744" extended-state="6" />
@@ -300,17 +303,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>135</line>
+          <line>136</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>140</line>
+          <line>141</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>133</line>
+          <line>134</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -320,27 +323,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>128</line>
+          <line>129</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>149</line>
+          <line>150</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>146</line>
+          <line>147</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>148</line>
+          <line>149</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/dining_philosopher.c</url>
-          <line>147</line>
+          <line>148</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -815,8 +818,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dining_philosopher.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="593">
-          <caret line="153" column="33" lean-forward="true" selection-start-line="153" selection-start-column="33" selection-end-line="153" selection-end-column="33" />
+        <state relative-caret-position="333">
+          <caret line="161" column="31" lean-forward="false" selection-start-line="161" selection-start-column="31" selection-end-line="161" selection-end-column="31" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>

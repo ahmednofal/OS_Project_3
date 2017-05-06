@@ -123,6 +123,7 @@ int main(int argc, char *argv[])
 void* runner(void *param)
 {
     int philo_num = *((int*) param);
+    printf("philo num input is : %d\n\n\n\n", philo_num);
     while(1)
     {
         int secs_to_slp = (rand()+1)%2;
@@ -154,9 +155,11 @@ void pickup_forks(int philo_num)
     //forks[left(philo_num)] != 0
     while(pthread_mutex_trylock(&mutex[left(philo_num)]) !=0)
     {
+        forks[right(philo_num)] = 0;
         cond_wait_on(right(philo_num));
     }
     //mutex_lock(left(philo_num));
+    forks[right(philo_num)] = 1;
     forks[left(philo_num)] = 1;
 }
 // Returning resources
