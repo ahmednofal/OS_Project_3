@@ -132,7 +132,7 @@ void* runner(void *param)
     //1printf("philo num input is : %d\n\n\n\n", philo_num);
     while(1)
     {
-        int secs_to_slp = (rand()+1)%2;
+        int secs_to_slp = (rand()+1)%3;
 
         // The philosopher will start by trying to eat, all of them will
         // which means it will try to lock the corresponding mutex and the mutex of the next philosopher
@@ -150,26 +150,29 @@ void* runner(void *param)
         pthread_mutex_lock(&printing_mutex);
         printf("philo_num %d thinking.....    \n", philo_num);
         pthread_mutex_unlock(&printing_mutex);
+        sleep(secs_to_slp);
+
     }
 
 }
 // Requesting resources
 void pickup_forks(int philo_num)
 {
-    printf("Philo Num :%d is thinking about picking up mutex %d\n\n",philo_num,right(philo_num));
+    printf("philo_num :%d is thinking about picking up mutex %d\n\n",philo_num,right(philo_num));
     mutex_lock(right(philo_num));
     forks[right(philo_num)] = 1;
-    printf("Philo Num :%d picked up mutex %d\n\n",philo_num,right(philo_num));
-    printf("Philo Num :%d is thinking about picking up mutex %d\n\n",philo_num,left(philo_num));
+    printf("philo_num :%d picked up mutex %d\n\n",philo_num,right(philo_num));
+    printf("philo_num :%d is thinking about picking up mutex %d\n\n",philo_num,left(philo_num));
     //forks[left(philo_num)] != 0
     while(pthread_mutex_trylock(&mutex[left(philo_num)]) !=0)
     {
         forks[right(philo_num)] = 0;
-        printf("Philo Num :%d left mutex %d\n\n",philo_num,right(philo_num));
+        printf("philo_num :%d put down mutex %d\n\n",philo_num,right(philo_num));
         cond_wait_on(right(philo_num));
     }
     //mutex_lock(right(philo_num));
-    printf("Philo Num :%d picked up mutex %d\n\n",philo_num,right(philo_num));
+    printf("philo_num :%d picked up mutex %d\n\n",philo_num,left(philo_num));
+    printf("philo_num :%d picked up mutex %d\n\n",philo_num,right(philo_num));
     //mutex_lock(left(philo_num));
     forks[right(philo_num)] = 1;
     forks[left(philo_num)] = 1;
@@ -178,9 +181,11 @@ void pickup_forks(int philo_num)
 void return_forks(int philo_num)
 {
     forks[left(philo_num)] = 0;
+    printf("philo_num :%d put down mutex %d\n\n",philo_num,left(philo_num));
     cond_signal(left(philo_num));
     mutex_unlock(left(philo_num));
     forks[right(philo_num)] = 0;
+    printf("philo_num :%d put down mutex %d\n\n",philo_num,right(philo_num));
     cond_signal(right(philo_num));
     mutex_unlock(right(philo_num));
 }
