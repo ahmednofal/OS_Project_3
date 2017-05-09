@@ -10,7 +10,7 @@
 
 #define NUM_THREADS 5
 
-#define right(philo_num) ((philo_num-1)%NUM_THREADS)
+#define right(philo_num) ((philo_num-1+NUM_THREADS)%NUM_THREADS)
 
 #define left(philo_num) ((philo_num+1)%NUM_THREADS)
 
@@ -69,6 +69,7 @@ pthread_attr_t philosophers_attr[NUM_THREADS]; /* set of thread attributes */
 pthread_mutex_t mutex[NUM_THREADS];
 pthread_cond_t cond_var[NUM_THREADS];
 pthread_mutex_t printing_mutex;
+int idx[NUM_THREADS] = {0,1,2,3,4};
 // forks to be taken and released
 int forks[NUM_THREADS];
 /*random commenting trying to understand the problem
@@ -108,12 +109,13 @@ int main(int argc, char *argv[])
     //for (int i =0; i <NUM_THREADS; i++)
     int i = 0;
 
-    while( i < NUM_THREADS-1)
+//    while( i < NUM_THREADS-1)
+    for(int i =0; i < NUM_THREADS; i++)
     {
         printf("creating thread for phil_num %d \n\n", i);
-        pthread_create(&philosophers[i],&philosophers_attr[i], &runner, &i);
-        if (i < NUM_THREADS-1)
-            i++;
+        pthread_create(&philosophers[i],&philosophers_attr[i], &runner, &idx[i]);
+//        if (i < NUM_THREADS-1)
+//            i++;
     }
 
 //    /* wait for the thread to exit */
@@ -127,7 +129,7 @@ int main(int argc, char *argv[])
 void* runner(void *param)
 {
     int philo_num = *((int*) param);
-    printf("philo num input is : %d\n\n\n\n", philo_num);
+    //1printf("philo num input is : %d\n\n\n\n", philo_num);
     while(1)
     {
         int secs_to_slp = (rand()+1)%2;
@@ -154,14 +156,20 @@ void* runner(void *param)
 // Requesting resources
 void pickup_forks(int philo_num)
 {
+    printf("Philo Num :%d is thinking about picking up mutex %d\n\n",philo_num,right(philo_num));
     mutex_lock(right(philo_num));
     forks[right(philo_num)] = 1;
+    printf("Philo Num :%d picked up mutex %d\n\n",philo_num,right(philo_num));
+    printf("Philo Num :%d is thinking about picking up mutex %d\n\n",philo_num,left(philo_num));
     //forks[left(philo_num)] != 0
     while(pthread_mutex_trylock(&mutex[left(philo_num)]) !=0)
     {
         forks[right(philo_num)] = 0;
+        printf("Philo Num :%d left mutex %d\n\n",philo_num,right(philo_num));
         cond_wait_on(right(philo_num));
     }
+    mutex_lock(right(philo_num));
+    printf("Philo Num :%d picked up mutex %d\n\n",philo_num,right(philo_num));
     //mutex_lock(left(philo_num));
     forks[right(philo_num)] = 1;
     forks[left(philo_num)] = 1;
