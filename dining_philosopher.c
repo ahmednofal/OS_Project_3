@@ -168,7 +168,7 @@ void pickup_forks(int philo_num)
         printf("Philo Num :%d left mutex %d\n\n",philo_num,right(philo_num));
         cond_wait_on(right(philo_num));
     }
-    mutex_lock(right(philo_num));
+    //mutex_lock(right(philo_num));
     printf("Philo Num :%d picked up mutex %d\n\n",philo_num,right(philo_num));
     //mutex_lock(left(philo_num));
     forks[right(philo_num)] = 1;
