@@ -12,7 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ecf7a077-77c3-4059-b33a-658f50de0173" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out" afterPath="$PROJECT_DIR$/out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dining_philosopher.c" afterPath="$PROJECT_DIR$/dining_philosopher.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -40,8 +40,8 @@
       <file leaf-file-name="dining_philosopher.c" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dining_philosopher.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="187" column="34" lean-forward="false" selection-start-line="187" selection-start-column="34" selection-end-line="187" selection-end-column="34" />
+            <state relative-caret-position="323">
+              <caret line="160" column="59" lean-forward="false" selection-start-line="160" selection-start-column="59" selection-end-line="160" selection-end-column="59" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -248,12 +248,12 @@
       <workItem from="1494070019296" duration="8159000" />
       <workItem from="1494104488148" duration="3001000" />
       <workItem from="1494241247720" duration="2639000" />
-      <workItem from="1494326637519" duration="12058000" />
+      <workItem from="1494326637519" duration="12764000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75483000" />
+    <option name="totallyTimeSpent" value="76189000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="25" width="1368" height="744" extended-state="6" />
@@ -833,8 +833,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dining_philosopher.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="187" column="34" lean-forward="false" selection-start-line="187" selection-start-column="34" selection-end-line="187" selection-end-column="34" />
+        <state relative-caret-position="323">
+          <caret line="160" column="59" lean-forward="false" selection-start-line="160" selection-start-column="59" selection-end-line="160" selection-end-column="59" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
